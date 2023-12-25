@@ -9,6 +9,7 @@ const BookForm = () => {
     const [publishYear, setPublishYear] = useState('')
     const [cost, setCost] = useState('')
     const [error, setError] = useState(null)
+    const [emptyFields, setEmptyFields] = useState([]) 
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -25,9 +26,11 @@ const BookForm = () => {
         const json = await response.json()
         if(!response.ok){
             setError(json.error)
+            setEmptyFields(json.emptyFields)
         }
         if(response.ok){
             setError(null)
+            setEmptyFields([])
             setTitle('')
             setAuthor('')
             setPublishYear('')
@@ -46,6 +49,7 @@ const BookForm = () => {
                 type="text"
                 onChange={(e) => setTitle(e.target.value)}
                 value={title}
+                className={emptyFields.includes('title') ? 'error' : ''}
             />
 
             <label>Book author: </label>
@@ -53,6 +57,7 @@ const BookForm = () => {
                 type="text"
                 onChange={(e) => setAuthor(e.target.value)}
                 value={author}
+                className={emptyFields.includes('author') ? 'error' : ''}
             />
 
             <label>Year of publication: </label>
@@ -60,6 +65,7 @@ const BookForm = () => {
                 type="number"
                 onChange={(e) => setPublishYear(e.target.value)}
                 value={publishYear}
+                className={emptyFields.includes('publishYear') ? 'error' : ''}
             />
 
             <label>Cost of the book: </label>
@@ -67,6 +73,7 @@ const BookForm = () => {
                 type="number"
                 onChange={(e) => setCost(e.target.value)}
                 value={cost}
+                className={emptyFields.includes('cost') ? 'error' : ''}
             />
             <button>Add book</button>
             {error && <div className="error">{error}</div>}

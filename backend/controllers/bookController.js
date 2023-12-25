@@ -5,16 +5,25 @@ import mongoose from 'mongoose';
 
 // create book
 export const createBook = async (request, response) => {
+
+    let emptyFields = []
+    if(!title){
+        emptyFields.push('title')
+    }
+    if(!author){
+        emptyFields.push('author')
+    }
+    if(!publishYear){
+        emptyFields.push('publishYear')
+    }
+    if(!cost){
+        emptyFields.push('cost')
+    }
+    if(emptyFields.length > 0){
+        return response.status(400).json({ error: 'Fill in all the fields', emptyFields })
+    }
+
     try {
-        if (
-            !request.body.title ||
-            !request.body.author ||
-            !request.body.publishYear
-        ) {
-            return response.status(400).json({
-                message: 'Напишите все требуемые поля: название, автор, год выпуска',
-            })
-        }
         const newBook = {
             title: request.body.title,
             author: request.body.author,
@@ -24,8 +33,7 @@ export const createBook = async (request, response) => {
         const book = await Book.create(newBook);
         return response.status(201).json(book);
     } catch (error) {
-        console.log(error.message);
-        response.status(500).json({ error: error.message });
+        response.status(400).json({ error: error.message });
     }
 };
 
