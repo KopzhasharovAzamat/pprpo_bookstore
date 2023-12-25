@@ -4,15 +4,19 @@ import {createBook, updateBook, deleteBook, getAllBooks, getBookById} from '../c
 
 const router = express.Router();
 
-// route for save a new book
+// POST a book
 router.post('/', createBook);
-// route for get all books from database
+
+// GET all books
 router.get('/', getAllBooks);
-// route for get one book by id from database
+
+// GET a book by id 
 router.get('/:id', getBookById);
-// route for update a book
+
+// UPDATE a book
 router.put('/:id', updateBook);
-// route for delete a book from database
+
+// DELETE a book
 router.delete('/:id', deleteBook);
 
 export default router;
