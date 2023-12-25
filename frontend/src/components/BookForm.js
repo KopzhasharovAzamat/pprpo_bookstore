@@ -13,7 +13,7 @@ const BookForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const book = {title,    author, publishYear, cost}
+        const book = {title, author, publishYear, cost}
 
         const response = await fetch('/books', {
             method:'POST',
