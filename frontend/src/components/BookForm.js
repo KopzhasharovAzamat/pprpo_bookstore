@@ -1,8 +1,10 @@
 import { useState } from "react"
 import { useBooksContext } from "../hooks/useBooksContext"
+import { useAuthContext } from "../hooks/useAuthContext"
 
 const BookForm = () => {
     const { dispatch } = useBooksContext()
+    const { user } = useAuthContext()
 
     const [title, setTitle] = useState('')
     const [author, setAuthor] = useState('')
@@ -14,13 +16,19 @@ const BookForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
+        if(!user){
+            setError('You must be logged in')
+            return
+        }
+
         const book = {title, author, publishYear, cost}
 
         const response = await fetch('/books', {
             method:'POST',
             body: JSON.stringify(book),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
             }
         })
         const json = await response.json()

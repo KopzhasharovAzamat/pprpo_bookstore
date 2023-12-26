@@ -1,11 +1,20 @@
 import { useBooksContext } from "../hooks/useBooksContext" 
+import { useAuthContext } from "../hooks/useAuthContext"
 
 const BookDetails = ({ book }) => {
     const { dispatch } = useBooksContext()
+    const { user } = useAuthContext()
     
     const handleClick = async () => {
+        if(!user){
+            return
+        }
+
         const response = await fetch('/books/' + book._id, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
         })
         const json = await response.json()
         if(response.ok){

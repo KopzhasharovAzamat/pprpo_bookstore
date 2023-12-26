@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 
 // create book
 export const createBook = async (request, response) => {
+    const {title, author, publishYear, cost} = request.body
 
     let emptyFields = []
     if(!title){

@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useBooksContext } from '../hooks/useBooksContext'
+import { useAuthContext } from '../hooks/useAuthContext'
 
 // components
 import BookDetails from '../components/BookDetails'
@@ -7,17 +8,24 @@ import BookForm from '../components/BookForm'
 
 const Home = () => {
     const {books, dispatch} = useBooksContext()
+    const {user} = useAuthContext()
     useEffect(() => {
         const fetchBooks = async () => {
-            const response = await fetch('/books')
+            const response = await fetch('/books', {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
             const json = await response.json()
 
             if(response.ok){
                 dispatch({type: 'SET_BOOKS', payload: json})
             }
         }
-        fetchBooks()
-    }, [])
+        if(user){
+            fetchBooks()
+        }
+    }, [dispatch, user])
 
     return (
         <div className="home">
