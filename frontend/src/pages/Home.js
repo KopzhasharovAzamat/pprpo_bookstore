@@ -11,16 +11,16 @@ const Home = () => {
     const {user} = useAuthContext()
     useEffect(() => {
         const fetchBooks = async () => {
-            const response = await fetch('/books', {
-                headers: {
-                    'Authorization': `Bearer ${user.token}`
-                }
-            })
-            const json = await response.json()
-
-            if(response.ok){
-                dispatch({type: 'SET_BOOKS', payload: json})
+        const response = await fetch('/books', {
+            headers: {
+                'Authorization': `Bearer ${user.token}`
             }
+        })
+        const json = await response.json()
+
+        if(response.ok){
+            dispatch({type: 'SET_BOOKS', payload: json})
+        }
         }
         if(user){
             fetchBooks()
